@@ -1,6 +1,7 @@
 import requests
 from uber_rides.session import Session,OAuth2Credential
 from uber_rides.client import UberRidesClient
+import os
 
 #Variables
 gps_Shoreham=[41.8867588, -87.6168219]
