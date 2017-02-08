@@ -11,7 +11,6 @@ import os
 import ssl
 
 ##Replace with known Lat, Long;
-'''
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -20,9 +19,7 @@ except AttributeError:
 else:
     # Handle target environment that doesn't support HTTPS verification
     ssl._create_default_https_context = _create_unverified_https_context
-'''
 #context = ssl._create_unverified_context()
-PYTHONHTTPSVERIFY=0 
 
 #Get Session
 def getAuth():
