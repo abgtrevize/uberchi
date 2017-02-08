@@ -1,24 +1,151 @@
-# This is a template for a Python scraper on morph.io (https://morph.io)
-# including some code snippets below that you should find helpful
+import requests
+import sqlite3
+import re
+from time import sleep
+from random import randint
+import json
+from geopy.geocoders import GoogleV3
+from uber_rides.session import Southession,OAuth2Credential
+from uber_rides.client import UberRidesClient
+import os
 
-# import scraperwiki
-# import lxml.html
-#
-# # Read in a page
-# html = scraperwiki.scrape("http://foo.com")
-#
-# # Find something on the page using css selectors
-# root = lxml.html.fromstring(html)
-# root.cssselect("div[align='left']")
-#
-# # Write out to the sqlite database using scraperwiki library
-# scraperwiki.sqlite.save(unique_keys=['name'], data={"name": "susan", "occupation": "software developer"})
-#
-# # An arbitrary query against the database
-# scraperwiki.sql.select("* from data where 'name'='peter'")
+#Get Session
+def getAuth():
+	credentials = {
+		'access_token': os.environ['MORPH_ACCESS_TOKEN'],
+		'client_id': os.environ['MORPH_CLIENT_ID'],
+		'client_secret': os.environ['MORPH_CLIENT_SECRET'],
+		'expires_in_seconds': 2592000,  
+		'grant_type': 'authorization_code',
+		'scopes': None
+	}
+	oauth2_credential = OAuth2Credential(**credentials)
+	session = Session(oauth2credential=oauth2_credential)
+	client = UberRidesClient(session)
+	return client
 
-# You don't have to do things with the ScraperWiki and lxml libraries.
-# You can use whatever libraries you want: https://morph.io/documentation/python
-# All that matters is that your final data is written to an SQLite database
-# called "data.sqlite" in the current working directory which has at least a table
-# called "data".
+#Get Product IDs;
+def getProducts(lattitude,longitude):
+	products=client.get_products(lattitude,longitude).json['products']
+	productIDs={'uberX':(i for i in products if i['display_name']=='uberX').next()['product_id'],
+		'uberPOOL':(i for i in products if i['display_name']=='uberPOOL').next()['product_id']}
+	return productIDs
+
+#Get GPS Coordinates;
+def getGPS(address):
+	geo = GoogleV3(timeout=5)
+	gpsCoord=geo.geocode(address);
+	return gpsCoord;
+
+def sendToDB():
+	#Get Client;
+	client=getAuth();
+
+	#Get GPS Coords;
+	gps_MPP=getGPS('151 N Michigan Ave, Chicago, IL 60601');
+	gps_Shoreham=getGPS('400 East South Water St, Chicago, IL 60601');
+	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
+	productIDs=getProducts(gps_Shoreham.latitude,gps_Shoreham.longitude)
+
+	#Price Estimates
+	x_MPP_Harper=client.estimate_ride(
+		start_latitude=gps_MPP.latitude,
+		start_longitude=gps_MPP.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=2,
+		product_id=productIDs['uberX']
+		)
+	p1_MPP_Harper=client.estimate_ride(
+		start_latitude=gps_MPP.latitude,
+		start_longitude=gps_MPP.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=1,
+		product_id=productIDs['uberPOOL']
+		)
+	p2_MPP_Harper=client.estimate_ride(
+		start_latitude=gps_MPP.latitude,
+		start_longitude=gps_MPP.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=2,
+		product_id=productIDs['uberPOOL']
+		)
+
+	x_Shoreham_Harper=client.estimate_ride(
+		start_latitude=gps_Shoreham.latitude,
+		start_longitude=gps_Shoreham.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=2,
+		product_id=productIDs['uberX']
+		)
+	p1_Shoreham_Harper=client.estimate_ride(
+		start_latitude=gps_Shoreham.latitude,
+		start_longitude=gps_Shoreham.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=1,
+		product_id=productIDs['uberPOOL']
+		)
+	p2_Shoreham_Harper=client.estimate_ride(
+		start_latitude=gps_Shoreham.latitude,
+		start_longitude=gps_Shoreham.longitude,
+		end_latitude=gps_Harper.latitude,
+		end_longitude=gps_Harper.longitude,
+		seat_count=2,
+		product_id=productIDs['uberPOOL']
+		)
+
+	x_Harper_MPP=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_MPP.latitude,
+		end_longitude=gps_MPP.longitude,
+		seat_count=2,
+		product_id=productIDs['uberX']
+		)
+	p1_Harper_MPP=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_MPP.latitude,
+		end_longitude=gps_MPP.longitude,
+		seat_count=1,
+		product_id=productIDs['uberPOOL']
+		)
+	p2_Harper_MPP=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_MPP.latitude,
+		end_longitude=gps_MPP.longitude,
+		seat_count=2,
+		product_id=productIDs['uberPOOL']
+		)
+
+	x_Harper_Shoreham=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_Shoreham.latitude,
+		end_longitude=gps_Shoreham.longitude,
+		seat_count=2,
+		product_id=productIDs['uberX']
+		)
+	p1_Harper_Shoreham=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_Shoreham.latitude,
+		end_longitude=gps_Shoreham.longitude,
+		seat_count=1,
+		product_id=productIDs['uberPOOL']
+		)
+	p2_Harper_Shoreham=client.estimate_ride(
+		start_latitude=gps_Harper.latitude,
+		start_longitude=gps_Harper.longitude,
+		end_latitude=gps_Shoreham.latitude,
+		end_longitude=gps_Shoreham.longitude,
+		seat_count=2,
+		product_id=productIDs['uberPOOL']
+		)
+	print p2_Harper_Shoreham.json
+	
