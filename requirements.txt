@@ -1,5 +1,3 @@
 geopy==1.11.0
 requests==2.9.1
 uber_rides==0.4.0
-uber_rides.session
-uber_rides.client

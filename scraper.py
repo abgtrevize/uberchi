@@ -5,7 +5,7 @@ from time import sleep
 from random import randint
 import json
 from geopy.geocoders import GoogleV3
-from uber_rides.session import Southession,OAuth2Credential
+from uber_rides.session import Session,OAuth2Credential
 from uber_rides.client import UberRidesClient
 import os
 
