@@ -21,7 +21,8 @@ else:
     # Handle target environment that doesn't support HTTPS verification
     ssl._create_default_https_context = _create_unverified_https_context
 '''
-context = ssl._create_unverified_context()
+#context = ssl._create_unverified_context()
+PYTHONHTTPSVERIFY=0 
 
 #Get Session
 def getAuth():
