@@ -9,6 +9,8 @@ from uber_rides.session import Session,OAuth2Credential
 from uber_rides.client import UberRidesClient
 import os
 import ssl
+from urllib3.contrib import pyopenssl
+
 
 ##Replace with known Lat, Long;
 try:
