@@ -4,3 +4,4 @@ uber_rides==0.4.0
 pyOpenSSL==0.15.1
 ndg-httpsclient==0.4.2
 pyasn1==0.1.9
+urllib3==1.20
