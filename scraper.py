@@ -40,6 +40,7 @@ def getGPS(address):
 def sendToDB():
 	#Get Client;
 	client=getAuth();
+	print client.session.oauth2credential.access_token	
 
 	#Get GPS Coords;
 	gps_MPP=getGPS('151 N Michigan Ave, Chicago, IL 60601');
