@@ -148,4 +148,6 @@ def sendToDB():
 		product_id=productIDs['uberPOOL']
 		)
 	print p2_Harper_Shoreham.json
+
+sendToDB()
 	
