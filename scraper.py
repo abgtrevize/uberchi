@@ -25,7 +25,7 @@ def getAuth():
 	return client
 
 #Get Product IDs;
-def getProducts(lattitude,longitude):
+def getProducts(client,lattitude,longitude):
 	products=client.get_products(lattitude,longitude).json['products']
 	productIDs={'uberX':(i for i in products if i['display_name']=='uberX').next()['product_id'],
 		'uberPOOL':(i for i in products if i['display_name']=='uberPOOL').next()['product_id']}
@@ -46,7 +46,7 @@ def sendToDB():
 	gps_MPP=getGPS('151 N Michigan Ave, Chicago, IL 60601');
 	gps_Shoreham=getGPS('400 East South Water St, Chicago, IL 60601');
 	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
-	productIDs=getProducts(gps_Shoreham.latitude,gps_Shoreham.longitude)
+	productIDs=getProducts(client,gps_Shoreham.latitude,gps_Shoreham.longitude)
 
 	#Price Estimates
 	x_MPP_Harper=client.estimate_ride(
