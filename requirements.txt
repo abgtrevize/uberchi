@@ -1,3 +1,6 @@
 geopy==1.11.0
 requests==2.9.1
 uber_rides==0.4.0
+pyOpenSSL==0.15.1
+ndg-httpsclient==0.4.2
+pyasn1==0.1.9
