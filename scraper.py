@@ -1,4 +1,4 @@
-import scraperwiki
+#import scraperwiki
 import time
 import requests
 
