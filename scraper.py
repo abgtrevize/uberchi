@@ -10,8 +10,8 @@ from uber_rides.client import UberRidesClient
 import os
 
 #Get Product IDs;
-def getProducts(client,lattitude,longitude):
-	url='https://api.uber.com/v1.2/products?latitude=%(1)s&longitude=%(2)s' % {'1':gps_Shoreham.latitude,'2':gps_Shoreham.longitude}
+def getProducts(accessToken,latitude,longitude):
+	url='https://api.uber.com/v1.2/products?latitude=%(1)s&longitude=%(2)s' % {'1':latitude,'2':longitude}
 	products=requests.get(url,headers={'Authorization':"Bearer %s" % accessToken}).json()['products']
 	productIDs={'uberX':(i for i in products if i['display_name']=='uberX').next()['product_id'],
 		'uberPOOL':(i for i in products if i['display_name']=='uberPOOL').next()['product_id']}
@@ -90,5 +90,5 @@ def getPrices():
 
 	print x_Shoreham_Harper
 
-sendToDB()
+getPrices()
 	
