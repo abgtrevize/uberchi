@@ -47,7 +47,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	x_MPP_Harper=requests.post(url,json=params,headers=headers).json()
-    scraperwiki.sqlite.save(unique_keys=['timestamp','product'], data={'timestamp':time.strftime('%Y-%m-%d %H:%M:%S'),'product':'uberX','price':x_MPP_Harper['fare']['value']})
+    scraperwiki.sqlite.save(
+    	unique_keys=['timestamp','product'], 
+    	data={'timestamp':time.strftime('%Y-%m-%d %H:%M:%S'),'product':'uberX','price':x_MPP_Harper['fare']['value']})
 
 	params={
 		'start_latitude':gps_MPP.latitude,
