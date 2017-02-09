@@ -49,7 +49,7 @@ def getPrices():
 	x_MPP_Harper=requests.post(url,json=params,headers=headers).json()
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product'],
-		data=dict(params,**{'price':x_MPP_Harper['fare']['value'],timestamp:time.strftime('%Y-%m-%d %H:%M:%S')})
+		data=dict(params,**{'price':x_MPP_Harper['fare']['value'],timestamp:time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'start_latitude':gps_MPP.latitude,
