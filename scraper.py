@@ -30,10 +30,10 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 	url='https://api.uber.com/v1.2/requests/estimate'
 	headers={'Authorization':"Bearer %s" % accessToken,"Content-Type": "application/json"}
 	params={
-		'start_latitude':gps_MPP.latitude,
-		'start_longitude':gps_MPP.longitude,
-		'end_latitude':gps_Harper.latitude,
-		'end_longitude':gps_Harper.longitude,
+		'start_latitude':start_latitude,
+		'start_longitude':start_longitude,
+		'end_latitude':end_latitude,
+		'end_longitude':end_longitude,
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	requestx=requests.post(url,json=params,headers=headers).json()		
@@ -41,10 +41,10 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestx['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
-		'start_latitude':gps_MPP.latitude,
-		'start_longitude':gps_MPP.longitude,
-		'end_latitude':gps_Harper.latitude,
-		'end_longitude':gps_Harper.longitude,
+		'start_latitude':start_latitude,
+		'start_longitude':start_longitude,
+		'end_latitude':end_latitude,
+		'end_longitude':end_longitude,
 		'seat_count':1,
 		'product_id':productIDs['uberPOOL']}
 	requestp1=requests.post(url,json=params,headers=headers).json()		
@@ -52,10 +52,10 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp1['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
-		'start_latitude':gps_MPP.latitude,
-		'start_longitude':gps_MPP.longitude,
-		'end_latitude':gps_Harper.latitude,
-		'end_longitude':gps_Harper.longitude,
+		'start_latitude':start_latitude,
+		'start_longitude':start_longitude,
+		'end_latitude':end_latitude,
+		'end_longitude':end_longitude,
 		'seat_count':2,
 		'product_id':productIDs['uberPOOL']}
 	requestp2=requests.post(url,json=params,headers=headers).json()		
