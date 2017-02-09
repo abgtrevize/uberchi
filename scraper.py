@@ -8,6 +8,7 @@ from geopy.geocoders import GoogleV3
 from uber_rides.session import Session,OAuth2Credential
 from uber_rides.client import UberRidesClient
 import os
+import scraperwiki
 
 #Get Product IDs;
 def getProducts(accessToken,latitude,longitude):
@@ -45,6 +46,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	x_MPP_Harper=requests.post(url,json=params,headers=headers).json()
+    scraperwiki.sqlite.save(unique_keys=['timestamp','product'], 
+    	data={'timestamp':time.strftime('%Y-%m-%d %H:%M:%S'),'product':'uberX','price':x_MPP_Harper.json()['fare']['value']})
+
 	params={
 		'start_latitude':gps_MPP.latitude,
 		'start_longitude':gps_MPP.longitude,
@@ -88,7 +92,59 @@ def getPrices():
 		'product_id':productIDs['uberPOOL']}
 	p2_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
 
-	print x_Shoreham_Harper
+	#Harper to MPP
+	params={
+		'end_latitude':gps_MPP.latitude,
+		'end_longitude':gps_MPP.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':2,
+		'product_id':productIDs['uberX']}
+	x_MPP_Harper=requests.post(url,json=params,headers=headers).json()
+	params={
+		'end_latitude':gps_MPP.latitude,
+		'end_longitude':gps_MPP.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':1,
+		'product_id':productIDs['uberPOOL']}
+	p1_MPP_Harper=requests.post(url,json=params,headers=headers).json()
+	params={
+		'end_latitude':gps_MPP.latitude,
+		'end_longitude':gps_MPP.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':2,
+		'product_id':productIDs['uberPOOL']}
+	p2_MPP_Harper=requests.post(url,json=params,headers=headers).json()
+
+#Harper to Shoreham
+	params={
+		'end_latitude':gps_Shoreham.latitude,
+		'end_longitude':gps_Shoreham.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':2,
+		'product_id':productIDs['uberX']}
+	x_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
+	params={
+		'end_latitude':gps_Shoreham.latitude,
+		'end_longitude':gps_Shoreham.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':1,
+		'product_id':productIDs['uberPOOL']}
+	p1_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
+	params={
+		'end_latitude':gps_Shoreham.latitude,
+		'end_longitude':gps_Shoreham.longitude,
+		'start_latitude':gps_Harper.latitude,
+		'start_longitude':gps_Harper.longitude,
+		'seat_count':2,
+		'product_id':productIDs['uberPOOL']}
+	p2_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
+
+    scraperwiki.sqlite.save(unique_keys=['ID'], data=data)
 
 getPrices()
 	

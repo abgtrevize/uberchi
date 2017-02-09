@@ -1,3 +1,4 @@
 geopy==1.11.0
 requests==2.9.1
 uber_rides==0.4.0
+-e git+http://github.com/openaustralia/scraperwiki-python.git@morph_defaults#egg=scraperwiki
