@@ -146,7 +146,5 @@ def getPrices():
 		'product_id':productIDs['uberPOOL']}
 	p2_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
 
-    scraperwiki.sqlite.save(unique_keys=['ID'], data=data)
-
 getPrices()
 	
