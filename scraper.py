@@ -63,7 +63,7 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp2['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
-def __main__():
+def main:
 	#Get GPS Coords;
 	gps_MPP=getGPS('151 N Michigan Ave, Chicago, IL 60601');
 	gps_Shoreham=getGPS('400 East South Water St, Chicago, IL 60601');
