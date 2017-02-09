@@ -25,7 +25,7 @@ def getGPS(address):
 	gpsCoord=geo.geocode(address);
 	return gpsCoord;
 
-def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productIDs):
+def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude):
 	accessToken=os.environ['MORPH_ACCESS_TOKEN']
 	url='https://api.uber.com/v1.2/requests/estimate'
 	headers={'Authorization':"Bearer %s" % accessToken,"Content-Type": "application/json"}
@@ -35,7 +35,7 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':2,
-		'product_id':productIDs['uberX']}
+		'product_id':products['uberX']}
 	requestx=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
@@ -46,7 +46,7 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':1,
-		'product_id':productIDs['uberPOOL']}
+		'product_id':products['uberPOOL']}
 	requestp1=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
@@ -57,7 +57,7 @@ def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productID
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':2,
-		'product_id':productIDs['uberPOOL']}
+		'product_id':products['uberPOOL']}
 	requestp2=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
@@ -72,7 +72,7 @@ def main():
 	productIDs=getProducts(accessToken,gps_Shoreham.latitude,gps_Shoreham.longitude)
 	print productIDs
 
-	while time.localtime().tm_hour<17:
+	while time.localtime().tm_hour<18:
 		getPrice(productIDs,gps_MPP.latitude,gps_MPP.longitude,gps_Harper.latitude,gps_Harper.longitude)
 		getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
 		getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_MPP.latitude,gps_MPP.longitude)
