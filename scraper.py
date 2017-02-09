@@ -11,6 +11,9 @@ import os
 import scraperwiki
 import time
 
+os.environ['TZ']='US/Central'
+time.tzset()
+
 #Get Product IDs;
 def getProducts(accessToken,latitude,longitude):
 	url='https://api.uber.com/v1.2/products?latitude=%(1)s&longitude=%(2)s' % {'1':latitude,'2':longitude}
