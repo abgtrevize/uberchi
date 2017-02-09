@@ -48,7 +48,7 @@ def getPrices():
 		'product_id':productIDs['uberX']}
 	x_MPP_Harper=requests.post(url,json=params,headers=headers).json()
 	scraperwiki.sqlite.save(
-		unique_keys=['timestamp','product'],
+		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':x_MPP_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
@@ -59,7 +59,9 @@ def getPrices():
 		'seat_count':1,
 		'product_id':productIDs['uberPOOL']}
 	p1_MPP_Harper=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p1_MPP_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p1_MPP_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'start_latitude':gps_MPP.latitude,
@@ -69,7 +71,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberPOOL']}
 	p2_MPP_Harper=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p2_MPP_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p2_MPP_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	#Shoreham to Harper
 	params={
@@ -80,7 +84,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	x_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':x_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':x_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'start_latitude':gps_Shoreham.latitude,
@@ -90,7 +96,9 @@ def getPrices():
 		'seat_count':1,
 		'product_id':productIDs['uberPOOL']}
 	p1_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p1_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p1_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'start_latitude':gps_Shoreham.latitude,
@@ -100,7 +108,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberPOOL']}
 	p2_Shoreham_Harper=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p2_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p2_Shoreham_Harper['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	#Harper to MPP
 	params={
@@ -111,7 +121,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	x_Harper_MPP=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':x_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':x_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'end_latitude':gps_MPP.latitude,
@@ -121,7 +133,9 @@ def getPrices():
 		'seat_count':1,
 		'product_id':productIDs['uberPOOL']}
 	p1_Harper_MPP=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p1_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p1_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'end_latitude':gps_MPP.latitude,
@@ -131,7 +145,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberPOOL']}
 	p2_Harper_MPP=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p2_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p2_Harper_MPP['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 #Harper to Shoreham
 	params={
@@ -142,7 +158,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberX']}
 	x_Harper_Shoreham=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':x_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':x_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'end_latitude':gps_Shoreham.latitude,
@@ -152,7 +170,9 @@ def getPrices():
 		'seat_count':1,
 		'product_id':productIDs['uberPOOL']}
 	p1_Harper_Shoreham=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p1_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p1_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 	params={
 		'end_latitude':gps_Shoreham.latitude,
@@ -162,7 +182,9 @@ def getPrices():
 		'seat_count':2,
 		'product_id':productIDs['uberPOOL']}
 	p2_Harper_Shoreham=requests.post(url,json=params,headers=headers).json()
-	data=dict(params,**{'price':p2_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	scraperwiki.sqlite.save(
+		unique_keys=['timestamp','product_id'],
+		data=dict(params,**{'price':p2_Harper_Shoreham['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 getPrices()
 	
