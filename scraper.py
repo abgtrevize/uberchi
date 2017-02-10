@@ -60,8 +60,8 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'end_longitude':end_longitude,
 		'seat_count':2,
 		'product_id':products['uberPOOL']}
-	requestp2=requests.post(url,json=params,headers=headers).json()	
-	print requestp2	
+	requestp2=requests.post(url,json=params,headers=headers)
+	print requestp2.reason
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp2.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
