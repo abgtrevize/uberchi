@@ -36,10 +36,11 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'end_longitude':end_longitude,
 		'seat_count':2,
 		'product_id':products['uberX']}
-	requestx=requests.post(url,json=params,headers=headers).json()		
+	requestx=requests.post(url,json=params,headers=headers)
+	print requestx.reason	
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestx['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+		data=dict(params,**{'price':requestx.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
@@ -47,10 +48,11 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'end_longitude':end_longitude,
 		'seat_count':1,
 		'product_id':products['uberPOOL']}
-	requestp1=requests.post(url,json=params,headers=headers).json()		
+	requestp1=requests.post(url,json=params,headers=headers)
+	print requestp1.reason	
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestp1['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+		data=dict(params,**{'price':requestp1.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
@@ -58,10 +60,11 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'end_longitude':end_longitude,
 		'seat_count':2,
 		'product_id':products['uberPOOL']}
-	requestp2=requests.post(url,json=params,headers=headers).json()		
+	requestp2=requests.post(url,json=params,headers=headers).json()	
+	requestp2.reason	
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestp2['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+		data=dict(params,**{'price':requestp2.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 def main():
 	#Get GPS Coords;
@@ -70,7 +73,6 @@ def main():
 	gps_Shoreham=getGPS('400 East South Water St, Chicago, IL 60601');
 	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
 	productIDs=getProducts(accessToken,gps_Shoreham.latitude,gps_Shoreham.longitude)
-	print productIDs
 
 	while time.localtime().tm_hour<18:
 		getPrice(productIDs,gps_MPP.latitude,gps_MPP.longitude,gps_Harper.latitude,gps_Harper.longitude)
