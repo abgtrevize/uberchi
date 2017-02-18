@@ -76,7 +76,7 @@ def main():
 	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
 	productIDs=getProducts(accessToken,gps_Shoreham.latitude,gps_Shoreham.longitude)
 
-	while time.localtime().tm_hour<18:
+	while time.localtime().tm_hour<21:
 		getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
 		getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
 		time.sleep(60*10)
