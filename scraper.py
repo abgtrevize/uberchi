@@ -38,6 +38,7 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberX']}
 	requestx=requests.post(url,json=params,headers=headers)
 	print requestx.reason	
+	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestx.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
@@ -50,6 +51,7 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberPOOL']}
 	requestp1=requests.post(url,json=params,headers=headers)
 	print requestp1.reason	
+	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp1.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
@@ -62,6 +64,7 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberPOOL']}
 	requestp2=requests.post(url,json=params,headers=headers)
 	print requestp2.reason
+	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp2.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
@@ -69,17 +72,14 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 def main():
 	#Get GPS Coords;
 	accessToken=os.environ['MORPH_ACCESS_TOKEN']
-	gps_MPP=getGPS('151 N Michigan Ave, Chicago, IL 60601');
 	gps_Shoreham=getGPS('400 East South Water St, Chicago, IL 60601');
 	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
 	productIDs=getProducts(accessToken,gps_Shoreham.latitude,gps_Shoreham.longitude)
 
 	while time.localtime().tm_hour<18:
-		getPrice(productIDs,gps_MPP.latitude,gps_MPP.longitude,gps_Harper.latitude,gps_Harper.longitude)
 		getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
-		getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_MPP.latitude,gps_MPP.longitude)
 		getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
-		time.sleep(60*5)
+		time.sleep(60*10)
 
 os.environ['TZ']='US/Central'
 time.tzset()
