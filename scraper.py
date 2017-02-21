@@ -38,10 +38,10 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberX']}
 	requestx=requests.post(url,json=params,headers=headers)
 	print requestx.reason	
-	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestx.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	time.sleep(10)
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
@@ -51,10 +51,10 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberPOOL']}
 	requestp1=requests.post(url,json=params,headers=headers)
 	print requestp1.reason	
-	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp1.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	time.sleep(10)
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
@@ -64,10 +64,10 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'product_id':products['uberPOOL']}
 	requestp2=requests.post(url,json=params,headers=headers)
 	print requestp2.reason
-	time.sleep(10)
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
 		data=dict(params,**{'price':requestp2.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
+	time.sleep(10)
 
 def main():
 	#Get GPS Coords;
