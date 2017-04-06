@@ -92,7 +92,7 @@ def __main__():
 			getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
 			getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_MPP.latitude,gps_MPP.longitude)
 			getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
-			time.sleep(60*10)
+			time.sleep(60*10);
 
 os.environ['TZ']='US/Central'
 time.tzset()
