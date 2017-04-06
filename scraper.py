@@ -21,7 +21,7 @@ def getProducts(accessToken,latitude,longitude):
 
 #Get GPS Coordinates;
 def getGPS(address):
-	geo = GoogleV3(timeout=5)
+	geo = GoogleV3(timeout=10)
 	gpsCoord=geo.geocode(address);
 	return gpsCoord;
 
