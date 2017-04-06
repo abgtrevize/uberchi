@@ -21,11 +21,11 @@ def getProducts(accessToken,latitude,longitude):
 
 #Get GPS Coordinates;
 def getGPS(address):
-	geo = GoogleV3(timeout=5)
+	geo = GoogleV3(timeout=10)
 	gpsCoord=geo.geocode(address);
 	return gpsCoord;
 
-def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude):
+def getPrice(start_latitude,start_longitude,end_latitude,end_longitude,productIDs):
 	accessToken=os.environ['MORPH_ACCESS_TOKEN']
 	url='https://api.uber.com/v1.2/requests/estimate'
 	headers={'Authorization':"Bearer %s" % accessToken,"Content-Type": "application/json"}
@@ -35,39 +35,33 @@ def getPrice(products,start_latitude,start_longitude,end_latitude,end_longitude)
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':2,
-		'product_id':products['uberX']}
-	requestx=requests.post(url,json=params,headers=headers)
-	print requestx.reason	
+		'product_id':productIDs['uberX']}
+	requestx=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestx.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
-	time.sleep(10)
+		data=dict(params,**{'price':requestx['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':1,
-		'product_id':products['uberPOOL']}
-	requestp1=requests.post(url,json=params,headers=headers)
-	print requestp1.reason	
+		'product_id':productIDs['uberPOOL']}
+	requestp1=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestp1.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
-	time.sleep(10)
+		data=dict(params,**{'price':requestp1['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 	params={
 		'start_latitude':start_latitude,
 		'start_longitude':start_longitude,
 		'end_latitude':end_latitude,
 		'end_longitude':end_longitude,
 		'seat_count':2,
-		'product_id':products['uberPOOL']}
-	requestp2=requests.post(url,json=params,headers=headers)
-	print requestp2.reason
+		'product_id':productIDs['uberPOOL']}
+	requestp2=requests.post(url,json=params,headers=headers).json()		
 	scraperwiki.sqlite.save(
 		unique_keys=['timestamp','product_id'],
-		data=dict(params,**{'price':requestp2.json()['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
-	time.sleep(10)
+		data=dict(params,**{'price':requestp2['fare']['value'],'timestamp':time.strftime('%Y-%m-%d %H:%M:%S')}))
 
 def main():
 	#Get GPS Coords;
@@ -76,10 +70,23 @@ def main():
 	gps_Harper=getGPS('5807 S Woodlawn Ave, Chicago, IL 60637');
 	productIDs=getProducts(accessToken,gps_Shoreham.latitude,gps_Shoreham.longitude)
 
-	while time.localtime().tm_hour<21:
-		getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
-		getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
-		time.sleep(60*10)
+	while time.localtime().tm_hour<18:
+		if time.localtime().tm_hour<9:			
+			getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
+			getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
+			time.sleep(60*5)
+		elif time.localtime().tm_hour<11:
+			time.sleep(60*30)
+		elif time.localtime().tm_hour<14:
+			getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
+			getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
+			time.sleep(60*5)
+		elif time.localtime().tm_hour<16:
+			time.sleep(60.30)
+		else:
+			getPrice(productIDs,gps_Shoreham.latitude,gps_Shoreham.longitude,gps_Harper.latitude,gps_Harper.longitude)
+			getPrice(productIDs,gps_Harper.latitude,gps_Harper.longitude,gps_Shoreham.latitude,gps_Shoreham.longitude)
+			time.sleep(60*10);
 
 os.environ['TZ']='US/Central'
 time.tzset()
